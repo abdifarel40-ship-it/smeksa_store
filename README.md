@@ -1,0 +1,1 @@
+# smeksa_store
