@@ -921,3 +921,48 @@ img {
     font-size: 13px;
   }
 }
+
+/* MASKOT BARU SMEKSA STORE */
+
+.mascot {
+  width: 58px;
+  height: 58px;
+  overflow: hidden;
+  border-radius: 15px;
+  background: #e4f0ff;
+  display: grid;
+  place-items: center;
+}
+
+.mascot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.hero-mascot {
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-mascot-image {
+  display: block;
+  width: 100%;
+  max-width: 230px;
+  height: 230px;
+  margin: 0 auto 12px;
+  object-fit: contain;
+  border-radius: 18px;
+}
+
+.hero-mascot strong {
+  display: block;
+  font-size: 20px;
+}
+
+@media (max-width: 700px) {
+  .hero-mascot-image {
+    max-width: 190px;
+    height: 190px;
+  }
+}
