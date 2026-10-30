@@ -40,7 +40,7 @@ const products = [
     category: "Kesehatan Hewan",
     price: 35000,
     description: "Contoh paket perlengkapan dasar hewan.",
-    image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=700&q=80"
+    image: "![Kucing Garang](https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=700&q=80)"
   },
   {
     id: 4,
