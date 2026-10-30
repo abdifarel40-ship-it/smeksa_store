@@ -624,6 +624,7 @@ footer small {
   }
 }
 
+
 /* =====================================
    RESPONSIVE SMEKSA STORE
    HP, TABLET, LAPTOP, DAN KOMPUTER
@@ -849,5 +850,74 @@ img {
 
   .mascot-face {
     font-size: 55px;
+  }
+}
+
+/* Tombol beli untuk semua perangkat */
+.buy-button {
+    width: 100%;
+    padding: 14px;
+    background: #0878e8;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Tampilan Android dan HP */
+@media screen and (max-width: 600px) {
+    .buy-button {
+        width: 100%;
+        padding: 15px;
+        font-size: 16px;
+        border-radius: 10px;
+    }
+}
+
+.cart-container {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.checkout-button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 9px;
+  background: #20b85a;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.checkout-button:hover {
+  background: #159447;
+}
+
+@media (max-width: 480px) {
+  .cart-container {
+    margin: 15px;
+    padding: 15px;
+  }
+
+  .cart-item {
+    font-size: 13px;
   }
 }
