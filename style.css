@@ -10,19 +10,24 @@
   color: #193451;
   background: #f4f8ff;
   font-synthesis: none;
+
   --blue: #1769d2;
-  --dark-blue: #103d76;
-  --light-blue: #e4f0ff;
+  --dark: #103d76;
+  --light: #e4f0ff;
   --border: #dce7f5;
   --muted: #6b7c91;
-  --white: #ffffff;
+  --white: #fff;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
-body, button, input, select, textarea {
+body,
+button,
+input,
+select,
+textarea {
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -35,7 +40,10 @@ body.modal-open {
   overflow: hidden;
 }
 
-button, input, select, textarea {
+button,
+input,
+select,
+textarea {
   font-size: 14px;
 }
 
@@ -56,14 +64,16 @@ textarea:focus-visible {
   display: none !important;
 }
 
+/* HEADER */
+
 .topbar {
   min-height: 82px;
-  padding: 14px 6%;
+  padding: 12px 6%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  background: var(--white);
+  background: #fff;
   border-bottom: 1px solid var(--border);
 }
 
@@ -75,37 +85,47 @@ textarea:focus-visible {
   text-decoration: none;
 }
 
-.mascot {
-  width: 52px;
-  height: 52px;
+.brand-mascot {
+  width: 58px;
+  height: 58px;
   border-radius: 16px;
+  overflow: hidden;
+  background: var(--light);
   display: grid;
   place-items: center;
-  background: var(--light-blue);
-  font-size: 31px;
 }
 
-.brand h1 {
+.brand-mascot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.brand strong {
+  display: block;
   color: var(--blue);
-  font-size: 23px;
+  font-size: 22px;
   line-height: 1.2;
 }
 
-.brand p {
+.brand small {
   color: var(--muted);
   font-size: 12px;
 }
 
-.cart-button {
+.cart-button,
+.primary-link {
   border: 0;
   border-radius: 10px;
   padding: 12px 16px;
-  color: var(--white);
+  color: white;
   background: var(--blue);
   font-weight: bold;
+  text-decoration: none;
 }
 
-#cart-count {
+.cart-button span {
   display: inline-grid;
   min-width: 23px;
   height: 23px;
@@ -116,9 +136,11 @@ textarea:focus-visible {
   background: white;
 }
 
+/* HERO */
+
 .hero {
   display: grid;
-  grid-template-columns: 1.5fr 0.8fr;
+  grid-template-columns: 1.5fr .8fr;
   align-items: center;
   gap: 30px;
   padding: 55px 8%;
@@ -132,47 +154,40 @@ textarea:focus-visible {
   letter-spacing: 1.3px;
 }
 
-.hero h2 {
+.hero h1 {
   max-width: 650px;
   margin: 12px 0;
   font-size: clamp(29px, 4vw, 43px);
   line-height: 1.15;
 }
 
-.hero h2 span {
+.hero h1 span {
   color: var(--blue);
 }
 
-.hero-copy > p {
+.hero-copy p {
   max-width: 550px;
   margin-bottom: 24px;
   color: #536983;
 }
 
-.primary-link {
-  display: inline-block;
-  padding: 12px 18px;
-  border-radius: 9px;
-  color: white;
-  background: var(--blue);
-  text-decoration: none;
-  font-weight: bold;
-}
-
 .hero-mascot {
-  max-width: 280px;
+  max-width: 300px;
   justify-self: center;
-  padding: 25px;
+  padding: 18px 22px 22px;
   border: 1px solid #d7e8ff;
   border-radius: 24px;
-  background: white;
+  background: #fff;
   text-align: center;
   box-shadow: 0 12px 35px #174f8c12;
 }
 
-.mascot-face {
-  font-size: 90px;
-  line-height: 1.4;
+.hero-mascot-image {
+  display: block;
+  width: 100%;
+  height: 230px;
+  object-fit: contain;
+  object-position: center bottom;
 }
 
 .hero-mascot strong {
@@ -186,6 +201,8 @@ textarea:focus-visible {
   color: var(--muted);
   font-size: 13px;
 }
+
+/* KATALOG */
 
 .catalog-section {
   padding: 48px 6%;
@@ -248,9 +265,9 @@ textarea:focus-visible {
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 15px;
-  background: white;
+  background: #fff;
   box-shadow: 0 4px 16px #143d7010;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform .2s, box-shadow .2s;
 }
 
 .product:hover {
@@ -263,7 +280,7 @@ textarea:focus-visible {
   height: 175px;
   display: block;
   object-fit: cover;
-  background: var(--light-blue);
+  background: var(--light);
 }
 
 .product-info {
@@ -291,10 +308,12 @@ textarea:focus-visible {
 
 .product-price {
   margin: 13px 0;
-  color: var(--dark-blue);
+  color: var(--dark);
   font-size: 18px;
   font-weight: bold;
 }
+
+/* TOMBOL */
 
 .primary-button,
 .secondary-button,
@@ -308,7 +327,7 @@ textarea:focus-visible {
 
 .primary-button,
 .add-button {
-  color: white;
+  color: #fff;
   background: var(--blue);
 }
 
@@ -319,19 +338,26 @@ textarea:focus-visible {
   background: #0f53ac;
 }
 
+.primary-button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
 .secondary-button {
   margin-top: 9px;
   color: var(--blue);
-  background: var(--light-blue);
+  background: var(--light);
 }
 
 .empty-state {
-  padding: 35px;
+  padding: 30px;
   border: 1px dashed #bfd4ed;
   border-radius: 12px;
   color: var(--muted);
   text-align: center;
 }
+
+/* INFORMASI PEMBAYARAN */
 
 .payment-info {
   display: flex;
@@ -342,7 +368,7 @@ textarea:focus-visible {
   padding: 28px;
   border: 1px solid var(--border);
   border-radius: 18px;
-  background: white;
+  background: #fff;
 }
 
 .payment-info p {
@@ -355,10 +381,12 @@ textarea:focus-visible {
   font-size: 46px;
 }
 
+/* FOOTER */
+
 footer {
   padding: 30px 6%;
-  background: var(--dark-blue);
-  color: white;
+  background: var(--dark);
+  color: #fff;
   text-align: center;
 }
 
@@ -375,6 +403,8 @@ footer p {
 footer small {
   color: #b7cee9;
 }
+
+/* POPUP DAN KERANJANG */
 
 .modal-backdrop {
   position: fixed;
@@ -408,7 +438,7 @@ footer small {
   align-items: center;
   justify-content: space-between;
   gap: 15px;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .cart-heading h2 {
@@ -419,122 +449,127 @@ footer small {
   width: 38px;
   height: 38px;
   border: 0;
-  border-radius: 10px;
-  color: var(--dark-blue);
-  background: var(--light-blue);
+  border-radius: 9px;
+  background: var(--light);
+  color: var(--dark);
+  font-size: 18px;
 }
 
+/* ITEM KERANJANG */
+
 .cart-item {
-  display: grid;
-  grid-template-columns: 72px minmax(0, 1fr);
-  gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
   padding: 14px 0;
   border-bottom: 1px solid var(--border);
 }
 
-.cart-item img {
-  width: 72px;
-  height: 72px;
-  border-radius: 9px;
+.cart-image {
+  width: 76px;
+  height: 76px;
+  flex: none;
+  border-radius: 10px;
   object-fit: cover;
-  background: var(--light-blue);
 }
 
-.cart-item h3 {
-  font-size: 14px;
+.cart-details {
+  min-width: 0;
+  flex: 1;
 }
 
-.cart-item .item-price {
-  margin-top: 4px;
-  color: var(--blue);
-  font-weight: bold;
+.cart-details h3 {
+  font-size: 15px;
+}
+
+.item-price {
+  margin: 4px 0;
+  color: var(--dark);
   font-size: 13px;
+  font-weight: bold;
 }
 
 .quantity-row {
   display: flex;
   align-items: center;
-  gap: 9px;
-  margin-top: 9px;
+  gap: 10px;
+  margin-top: 8px;
 }
 
 .quantity-button {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border: 1px solid var(--border);
   border-radius: 7px;
-  background: white;
+  background: #fff;
+  color: var(--blue);
+  font-weight: bold;
 }
 
 .remove-button {
   margin-left: auto;
   border: 0;
-  color: #c33131;
   background: transparent;
+  color: #c0392b;
   font-size: 12px;
 }
 
 .cart-summary {
-  position: sticky;
-  bottom: 0;
-  margin-top: 20px;
-  padding-top: 18px;
-  background: #f8fbff;
+  margin-top: 22px;
 }
 
 .summary-line {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
+  align-items: center;
   font-size: 17px;
 }
 
 .summary-line strong {
-  color: var(--dark-blue);
+  color: var(--dark);
 }
 
 .muted {
-  margin: 8px 0 15px;
+  margin: 8px 0 16px;
   color: var(--muted);
   font-size: 12px;
 }
 
-#checkout-form {
+/* FORM CHECKOUT */
+
+.checkout-panel form {
   display: grid;
   gap: 9px;
 }
 
-#checkout-form label {
-  margin-top: 8px;
+.checkout-panel label {
+  margin-top: 7px;
   font-size: 13px;
   font-weight: bold;
 }
 
-#checkout-form textarea {
-  min-height: 80px;
+.checkout-panel textarea {
+  min-height: 78px;
   resize: vertical;
 }
 
 .payment-box {
-  margin: 12px 0;
-  padding: 15px;
-  border: 1px solid #d5e6fb;
+  margin: 10px 0;
+  padding: 14px;
   border-radius: 10px;
-  background: var(--light-blue);
+  background: var(--light);
+  font-size: 13px;
 }
 
 .payment-box p {
   margin-top: 5px;
-  font-size: 13px;
-}
-
-.payment-box .muted {
-  margin-bottom: 0;
 }
 
 .small {
-  font-size: 11px;
+  text-align: center;
 }
+
+/* NOTIFIKASI */
 
 .toast {
   position: fixed;
@@ -542,15 +577,14 @@ footer small {
   right: 20px;
   bottom: 20px;
   max-width: calc(100% - 40px);
-  padding: 13px 18px;
+  padding: 12px 18px;
   border-radius: 10px;
-  color: white;
-  background: var(--dark-blue);
-  box-shadow: 0 5px 20px #0002;
+  background: #193451;
+  color: #fff;
   opacity: 0;
   pointer-events: none;
   transform: translateY(10px);
-  transition: 0.2s;
+  transition: .2s;
 }
 
 .toast.show {
@@ -558,150 +592,32 @@ footer small {
   transform: translateY(0);
 }
 
-@media (max-width: 1000px) {
-  .products-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
+/* RESPONSIVE TABLET */
 
-@media (max-width: 700px) {
-  .hero {
-    grid-template-columns: 1fr;
-    padding: 38px 6%;
-  }
-
-  .hero-mascot {
-    width: 100%;
-    max-width: none;
-  }
-
-  .products-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
-
-  .product-image {
-    height: 140px;
-  }
-
-  .product-info {
-    padding: 11px;
-  }
-
-  .product-name {
-    font-size: 14px;
-  }
-
-  .filters {
-    flex-direction: column;
-  }
-
-  .payment-info {
-    margin-bottom: 30px;
-    padding: 20px;
-  }
-}
-
-@media (max-width: 380px) {
-  .topbar {
-    padding: 12px 4%;
-  }
-
-  .brand h1 {
-    font-size: 18px;
-  }
-
-  .cart-button {
-    padding: 10px;
-  }
-
-  .products-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .product-image {
-    height: 200px;
-  }
-}
-
-
-/* =====================================
-   RESPONSIVE SMEKSA STORE
-   HP, TABLET, LAPTOP, DAN KOMPUTER
-===================================== */
-
-/* Pastikan semua elemen mengikuti lebar layar */
-* {
-  box-sizing: border-box;
-}
-
-html {
-  width: 100%;
-  overflow-x: hidden;
-  -webkit-text-size-adjust: 100%;
-}
-
-body {
-  width: 100%;
-  min-width: 320px;
-  margin: 0;
-  overflow-x: hidden;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-/* Gambar tidak boleh melewati layar */
-img {
-  max-width: 100%;
-}
-
-/* Laptop dan komputer */
-@media (min-width: 1200px) {
-  .topbar,
-  .catalog-section {
-    padding-left: 7%;
-    padding-right: 7%;
-  }
-
-  .products-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-/* Tablet dan laptop kecil */
-@media (max-width: 1000px) {
+@media (max-width: 900px) {
   .products-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .hero {
-    padding: 40px 5%;
-    gap: 20px;
+    padding: 45px 6%;
   }
 }
 
-/* Tablet dan HP */
-@media (max-width: 700px) {
+/* RESPONSIVE HP */
+
+@media (max-width: 650px) {
   .topbar {
-    padding: 12px 4%;
-    gap: 10px;
+    padding: 10px 4%;
   }
 
-  .brand {
-    gap: 8px;
-  }
-
-  .mascot {
-    width: 44px;
-    height: 44px;
-    font-size: 26px;
-  }
-
-  .brand h1 {
+  .brand strong {
     font-size: 18px;
   }
 
-  .brand p {
-    font-size: 11px;
+  .brand-mascot {
+    width: 48px;
+    height: 48px;
   }
 
   .cart-button {
@@ -711,40 +627,34 @@ img {
 
   .hero {
     grid-template-columns: 1fr;
-    padding: 32px 5%;
+    padding: 38px 6%;
+    text-align: center;
   }
 
-  .hero h2 {
-    font-size: clamp(25px, 7vw, 34px);
+  .hero-copy p {
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .hero-mascot {
-    width: 100%;
-    max-width: 300px;
+    width: min(100%, 280px);
+  }
+
+  .hero-mascot-image {
+    height: 200px;
   }
 
   .catalog-section {
-    padding: 30px 4%;
+    padding: 35px 4%;
   }
 
   .section-heading {
-    align-items: flex-start;
+    align-items: start;
     flex-direction: column;
-  }
-
-  .section-heading h2,
-  .payment-info h2 {
-    font-size: 22px;
   }
 
   .filters {
     flex-direction: column;
-  }
-
-  .filters input,
-  .filters select {
-    width: 100%;
-    min-height: 44px;
   }
 
   .products-grid {
@@ -757,212 +667,50 @@ img {
   }
 
   .product-info {
-    padding: 10px;
+    padding: 11px;
+  }
+
+  .product-name {
+    font-size: 14px;
+  }
+
+  .product-price {
+    font-size: 16px;
   }
 
   .product-category {
     font-size: 10px;
   }
 
-  .product-name {
-    font-size: 14px;
-  }
-
-  .product-description {
-    font-size: 12px;
-  }
-
-  .product-price {
-    font-size: 15px;
-  }
-
-  .add-button {
-    padding: 10px 6px;
-    font-size: 12px;
-  }
-
   .payment-info {
-    margin: 0 4% 30px;
+    margin: 0 4% 35px;
     padding: 18px;
+  }
+
+  .payment-icon {
+    font-size: 34px;
   }
 
   .cart-panel,
   .checkout-panel {
-    width: 100%;
-    max-width: 100%;
     padding: 18px;
   }
 
-  #checkout-form input,
-  #checkout-form textarea,
-  #checkout-form button {
-    font-size: 16px;
+  .checkout-panel {
+    margin: 12px auto;
+    min-height: auto;
+    width: calc(100% - 24px);
   }
 }
 
-/* HP dengan layar sangat kecil */
+/* HP KECIL */
+
 @media (max-width: 380px) {
-  .topbar {
-    align-items: flex-start;
-  }
-
-  .brand h1 {
-    font-size: 16px;
-  }
-
-  .cart-button {
-    font-size: 11px;
-    padding: 9px 7px;
-  }
-
   .products-grid {
     grid-template-columns: 1fr;
   }
 
   .product-image {
-    height: 200px;
-  }
-
-  .product-info {
-    padding: 14px;
-  }
-
-  .product-name {
-    font-size: 17px;
-  }
-
-  .add-button {
-    padding: 12px;
-    font-size: 14px;
-  }
-}
-
-/* HP dalam posisi landscape */
-@media (max-height: 500px) and (orientation: landscape) {
-  .hero {
-    padding-top: 20px;
-    padding-bottom: 20px;
-  }
-
-  .hero-mascot {
-    padding: 12px;
-  }
-
-  .mascot-face {
-    font-size: 55px;
-  }
-}
-
-/* Tombol beli untuk semua perangkat */
-.buy-button {
-    width: 100%;
-    padding: 14px;
-    background: #0878e8;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* Tampilan Android dan HP */
-@media screen and (max-width: 600px) {
-    .buy-button {
-        width: 100%;
-        padding: 15px;
-        font-size: 16px;
-        border-radius: 10px;
-    }
-}
-
-.cart-container {
-  max-width: 600px;
-  margin: 30px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-}
-
-.cart-item {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid #ddd;
-}
-
-.checkout-button {
-  width: 100%;
-  padding: 14px;
-  margin-top: 15px;
-  border: none;
-  border-radius: 9px;
-  background: #20b85a;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.checkout-button:hover {
-  background: #159447;
-}
-
-@media (max-width: 480px) {
-  .cart-container {
-    margin: 15px;
-    padding: 15px;
-  }
-
-  .cart-item {
-    font-size: 13px;
-  }
-}
-
-/* MASKOT BARU SMEKSA STORE */
-
-.mascot {
-  width: 58px;
-  height: 58px;
-  overflow: hidden;
-  border-radius: 15px;
-  background: #e4f0ff;
-  display: grid;
-  place-items: center;
-}
-
-.mascot img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.hero-mascot {
-  overflow: hidden;
-  position: relative;
-}
-
-.hero-mascot-image {
-  display: block;
-  width: 100%;
-  max-width: 230px;
-  height: 230px;
-  margin: 0 auto 12px;
-  object-fit: contain;
-  border-radius: 18px;
-}
-
-.hero-mascot strong {
-  display: block;
-  font-size: 20px;
-}
-
-@media (max-width: 700px) {
-  .hero-mascot-image {
-    max-width: 190px;
     height: 190px;
   }
 }
