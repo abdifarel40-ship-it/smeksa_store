@@ -24,7 +24,7 @@ const products = [
     category: "Agribisnis Ternak Ruminansia",
     price: 25000,
     description: "Pakan tambahan untuk ternak ruminansia.",
-    image: "https://raw.githubusercontent.com/USERNAME/REPOSITORY/main/images/foto-sapi.jpg"
+    image: "images/foto-sapi.jpg"
   },
   {
     id: 2,
