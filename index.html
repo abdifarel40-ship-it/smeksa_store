@@ -5,69 +5,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="SMEKSA STORE, toko produk dan jasa karya enam jurusan SMK.">
+  <meta name="theme-color" content="#1769d2">
   <title>SMEKSA STORE | Belanja Karya SMK</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
-  
-<section class="cart-container">
-  <h2>Keranjang Belanja</h2>
-
-  <p>Jumlah barang: <span id="cart-count">0</span></p>
-
-  <div id="cart-list">
-    <!-- Daftar barang akan muncul di sini -->
-  </div>
-
-  <hr>
-
-  <h3>
-    Total: <span id="cart-total">Rp0</span>
-  </h3>
-
-  <button onclick="checkoutWhatsApp()" class="checkout-button">
-    Hubungi Penjual via WhatsApp
-  </button>
-</section>
-
   <header class="topbar">
-    <a href="#" class="brand" aria-label="SMEKSA STORE beranda">
-      <div <div class="mascot">
-  <img src="maskot-smeksa.png" alt="Maskot SipUji">
-</div>
-      <div>
-        <h1>SMEKSA STORE</h1>
-        <p>Belanja bareng SipUji!</p>
-      </div>
+    <a href="#beranda" class="brand" aria-label="SMEKSA STORE beranda">
+      <span class="brand-mascot">
+        <img src="maskot-smeksa.png" alt="">
+      </span>
+      <span>
+        <strong>SMEKSA STORE</strong>
+        <small>Belanja bareng Sip Uji!</small>
+      </span>
     </a>
-
     <button class="cart-button" id="open-cart" type="button">
       🛒 Keranjang <span id="cart-count">0</span>
     </button>
   </header>
 
-  <main>
+  <main id="beranda">
     <section class="hero">
       <div class="hero-copy">
         <span class="eyebrow">KARYA SISWA, PILIHAN KITA</span>
-        <h2>Temukan produk favoritmu di <span>SMEKSA STORE!</span></h2>
-        <p>
-          Satu tempat untuk produk olahan, kebutuhan ternak,
-          jasa desain, otomotif, dan layanan akuntansi.
-        </p>
+        <h1>Temukan produk favoritmu di <span>SMEKSA STORE!</span></h1>
+        <p>Satu tempat untuk produk olahan, kebutuhan ternak, jasa desain, otomotif, dan layanan akuntansi.</p>
         <a class="primary-link" href="#katalog">Mulai Belanja ↓</a>
       </div>
 
-      <div class="hero-mascot">
-  <img
-    src="maskot-smeksa.png"
-    alt="Sip Uji, maskot SMEKSA STORE"
-    class="hero-mascot-image"
-  >
-  <strong>Halo, aku Sip Uji!</strong>
-  <p>Teman belanjamu di SMEKSA STORE.</p>
-</div>
+      <aside class="hero-mascot">
+        <img
+          src="maskot-smeksa.png"
+          alt="Sip Uji, maskot SMEKSA STORE"
+          class="hero-mascot-image"
+        >
+        <strong>Halo, aku Sip Uji!</strong>
+        <p>Teman belanjamu di SMEKSA STORE.</p>
+      </aside>
+    </section>
 
     <section class="catalog-section" id="katalog">
       <div class="section-heading">
@@ -97,7 +74,8 @@
         </select>
       </div>
 
-      <div id="products" class="products-grid"></div>
+      <div id="products" class="products-grid" aria-live="polite"></div>
+
       <div id="empty-state" class="empty-state" hidden>
         Produk tidak ditemukan. Coba kata kunci lain.
       </div>
@@ -107,32 +85,37 @@
       <div>
         <span class="eyebrow">PEMBAYARAN</span>
         <h2>Belanja mudah, konfirmasi lewat WhatsApp</h2>
-        <p>
-          Periksa pesananmu, kirim ke penjual, lalu lakukan
-          pembayaran manual setelah detailnya dikonfirmasi.
-        </p>
+        <p>Periksa pesananmu, kirim ke penjual, lalu konfirmasi ongkir dan pembayaran langsung dengan penjual.</p>
       </div>
       <div class="payment-icon">💳</div>
     </section>
   </main>
 
   <footer>
-    <div class="footer-brand">🐮 SMEKSA STORE</div>
+    <div class="footer-brand">SMEKSA STORE</div>
     <p>Didukung kreativitas enam jurusan SMK.</p>
     <small>© 2026 SMEKSA STORE. Proyek toko online sekolah.</small>
   </footer>
 
-  <!-- Panel keranjang -->
+  <!-- KERANJANG BELANJA -->
   <div class="modal-backdrop" id="cart-modal" hidden>
-    <section class="cart-panel" role="dialog" aria-modal="true"
-      aria-labelledby="cart-title">
+    <section
+      class="cart-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="cart-title"
+    >
       <div class="cart-heading">
         <div>
           <span class="eyebrow">PESANANMU</span>
           <h2 id="cart-title">Keranjang Belanja</h2>
         </div>
-        <button class="close-button" id="close-cart" type="button"
-          aria-label="Tutup keranjang">✕</button>
+        <button
+          class="close-button"
+          id="close-cart"
+          type="button"
+          aria-label="Tutup keranjang"
+        >✕</button>
       </div>
 
       <div id="cart-items"></div>
@@ -142,10 +125,15 @@
           <span>Total belanja</span>
           <strong id="cart-total">Rp0</strong>
         </div>
-        <p class="muted">Ongkir, jika ada, dikonfirmasi oleh penjual.</p>
+
+        <p class="muted">
+          Ongkir, jika ada, dikonfirmasi oleh penjual.
+        </p>
+
         <button id="checkout-button" class="primary-button" type="button">
           Lanjut Checkout
         </button>
+
         <button id="continue-shopping" class="secondary-button" type="button">
           Lanjut Belanja
         </button>
@@ -153,48 +141,77 @@
     </section>
   </div>
 
-  <!-- Form checkout -->
+  <!-- FORM CHECKOUT -->
   <div class="modal-backdrop" id="checkout-modal" hidden>
-    <section class="checkout-panel" role="dialog" aria-modal="true"
-      aria-labelledby="checkout-title">
+    <section
+      class="checkout-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="checkout-title"
+    >
       <div class="cart-heading">
         <div>
           <span class="eyebrow">LANGKAH TERAKHIR</span>
           <h2 id="checkout-title">Data Pembeli</h2>
         </div>
-        <button class="close-button" id="close-checkout" type="button"
-          aria-label="Tutup checkout">✕</button>
+        <button
+          class="close-button"
+          id="close-checkout"
+          type="button"
+          aria-label="Tutup checkout"
+        >✕</button>
       </div>
 
       <form id="checkout-form">
         <label for="buyer-name">Nama lengkap</label>
-        <input id="buyer-name" name="buyerName" required maxlength="100"
-          autocomplete="name" placeholder="Masukkan nama">
+        <input
+          id="buyer-name"
+          name="buyerName"
+          required
+          maxlength="100"
+          autocomplete="name"
+          placeholder="Masukkan nama"
+        >
 
         <label for="buyer-phone">Nomor HP pembeli</label>
-        <input id="buyer-phone" name="buyerPhone" type="tel" required
-          maxlength="20" autocomplete="tel" placeholder="Contoh: 081234567890">
+        <input
+          id="buyer-phone"
+          name="buyerPhone"
+          type="tel"
+          required
+          maxlength="20"
+          autocomplete="tel"
+          placeholder="Contoh: 081234567890"
+        >
 
         <label for="buyer-address">Alamat lengkap</label>
-        <textarea id="buyer-address" name="buyerAddress" required
-          maxlength="500" autocomplete="street-address"
-          placeholder="Nama jalan, desa, kecamatan, kabupaten"></textarea>
+        <textarea
+          id="buyer-address"
+          name="buyerAddress"
+          required
+          maxlength="500"
+          autocomplete="street-address"
+          placeholder="Nama jalan, desa, kecamatan, kabupaten"
+        ></textarea>
 
         <label for="buyer-note">Catatan (opsional)</label>
-        <textarea id="buyer-note" name="buyerNote" maxlength="300"
-          placeholder="Warna, varian, atau permintaan lain"></textarea>
+        <textarea
+          id="buyer-note"
+          name="buyerNote"
+          maxlength="300"
+          placeholder="Varian atau permintaan lain"
+        ></textarea>
 
         <div class="payment-box">
           <strong>Metode pembayaran</strong>
           <p>Transfer bank atau pembayaran manual setelah dikonfirmasi penjual.</p>
-          <p class="muted">
-            Detail rekening dan instruksi pembayaran akan diberikan oleh penjual.
-          </p>
+          <p class="muted">Detail pembayaran diberikan oleh penjual setelah pesanan diperiksa.</p>
         </div>
 
         <button class="primary-button" type="submit">
           Kirim Pesanan ke WhatsApp
         </button>
+
         <p class="muted small">
           Pesanan belum dikonfirmasi sampai penjual menyetujuinya.
         </p>
