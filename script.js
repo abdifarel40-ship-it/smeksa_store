@@ -1,3 +1,4 @@
+
 "use strict";
 
 // ============================================
@@ -6,8 +7,8 @@
 
 // Ganti dengan nomor WhatsApp penjual.
 // Format: kode negara + nomor, tanpa +, spasi, atau tanda hubung.
-// Contoh format Indonesia: +6285648262713
-const STORE_WHATSAPP = "+6285648262713";
+// Contoh format Indonesia: 6281234567890
+const STORE_WHATSAPP = "628548262713";
 
 // Data rekening tidak dicantumkan di website.
 // Berikan informasi rekening kepada pembeli secara aman
@@ -24,7 +25,7 @@ const products = [
     category: "Agribisnis Ternak Ruminansia",
     price: 25000,
     description: "Pakan tambahan untuk ternak ruminansia.",
-    image: "https://i.pinimg.com/736x/43/de/c0/43dec0799987456473a927650023d509.jpg"
+    image: "https://images.unsplash.com/photo-1500595046743-cd271d694d30?auto=format&fit=crop&w=700&q=80"
   },
   {
     id: 2,
@@ -40,7 +41,7 @@ const products = [
     category: "Kesehatan Hewan",
     price: 35000,
     description: "Contoh paket perlengkapan dasar hewan.",
-    image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=700&q=80.jpg"
+    image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=700&q=80"
   },
   {
     id: 4,
@@ -553,3 +554,42 @@ document.getElementById("checkout-form").addEventListener("submit", event => {
 renderProducts();
 renderCart();
 updateCartBadge();
+const STORE_WHATSAPP = "6285648262713";
+
+// Fungsi tombol beli sekarang
+function buyProduct(productId) {
+
+    // Cari produk
+    const product = products.find(
+        item => item.id === productId
+    );
+
+    if (!product) {
+        alert("Produk tidak ditemukan!");
+        return;
+    }
+
+    // Buat pesan pesanan
+    const message = `
+HALO SMEKSA STORE!
+
+Saya ingin membeli produk:
+
+Nama Produk: ${product.name}
+Harga: Rp${Number(product.price).toLocaleString("id-ID")}
+
+Mohon konfirmasi pesanan saya.
+Terima kasih!
+`;
+
+    // Buat link WhatsApp
+    const whatsappURL =
+        "https://wa.me/" +
+        STORE_WHATSAPP +
+        "?text=" +
+        encodeURIComponent(message);
+
+    // Buka WhatsApp di Android atau perangkat lain
+    window.location.href = whatsappURL;
+}
+
