@@ -1,23 +1,14 @@
 
 "use strict";
 
-// ============================================
-// PENGATURAN TOKO - UBAH BAGIAN INI
-// ============================================
+// ==========================================
+// PENGATURAN WHATSAPP SMEKSA STORE
+// ==========================================
+const STORE_WHATSAPP = "6285648262713";
 
-// Ganti dengan nomor WhatsApp penjual.
-// Format: kode negara + nomor, tanpa +, spasi, atau tanda hubung.
-// Contoh format Indonesia: 6281234567890
-const STORE_WHATSAPP = "628548262713";
-
-// Data rekening tidak dicantumkan di website.
-// Berikan informasi rekening kepada pembeli secara aman
-// setelah pesanan dikonfirmasi.
-
-// ============================================
-// DATA PRODUK
-// ============================================
-
+// ==========================================
+// DAFTAR PRODUK SMEKSA STORE
+// ==========================================
 const products = [
   {
     id: 1,
@@ -81,7 +72,7 @@ const products = [
     category: "Desain Komunikasi Visual",
     price: 30000,
     description: "Desain poster untuk promosi atau acara.",
-    image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=700&q=80"
+    image: "https://images.unsplash.com/photo-1541701494587-cb585028ab?auto=format&fit=crop&w=700&q=80"
   },
   {
     id: 9,
@@ -117,34 +108,34 @@ const products = [
   }
 ];
 
-// ============================================
-// ELEMEN HTML
-// ============================================
+// ==========================================
+// MENGHUBUNGKAN HTML DENGAN JAVASCRIPT
+// ==========================================
+const $ = (selector) => document.querySelector(selector);
 
-const productContainer = document.getElementById("products");
-const searchInput = document.getElementById("search");
-const categorySelect = document.getElementById("category");
-const emptyState = document.getElementById("empty-state");
-const productCount = document.getElementById("product-count");
-const cartCount = document.getElementById("cart-count");
-const cartModal = document.getElementById("cart-modal");
-const checkoutModal = document.getElementById("checkout-modal");
-const cartItems = document.getElementById("cart-items");
-const cartTotal = document.getElementById("cart-total");
-const toast = document.getElementById("toast");
+const productContainer = $("#products");
+const searchInput = $("#search");
+const categorySelect = $("#category");
+const emptyState = $("#empty-state");
+const productCount = $("#product-count");
 
-// ============================================
-// KERANJANG BELANJA
-// ============================================
+const cartModal = $("#cart-modal");
+const checkoutModal = $("#checkout-modal");
+const cartItems = $("#cart-items");
+const cartTotal = $("#cart-total");
+const toast = $("#toast");
 
-// Keranjang disimpan di browser pengunjung.
-// Ini bukan database bersama untuk semua pelanggan.
+let toastTimer;
 let cart = loadCart();
-let toastTimeout;
 
+// ==========================================
+// MENYIMPAN KERANJANG DI BROWSER
+// ==========================================
 function loadCart() {
   try {
-    const saved = JSON.parse(localStorage.getItem("smeksa-cart") || "[]");
+    const saved = JSON.parse(
+      localStorage.getItem("smeksa-cart") || "[]"
+    );
 
     if (!Array.isArray(saved)) return [];
 
@@ -153,312 +144,422 @@ function loadCart() {
         Number.isInteger(item.id) &&
         Number.isInteger(item.quantity) &&
         item.quantity > 0 &&
-        products.some(product => product.id === item.id)
+        products.some(p => p.id === item.id)
       )
       .map(item => ({
         id: item.id,
         quantity: Math.min(item.quantity, 99)
       }));
-  } catch (error) {
+
+  } catch {
     return [];
   }
 }
 
 function saveCart() {
   try {
-    localStorage.setItem("smeksa-cart", JSON.stringify(cart));
-  } catch (error) {
+    localStorage.setItem(
+      "smeksa-cart",
+      JSON.stringify(cart)
+    );
+  } catch {
     showToast("Keranjang tidak dapat disimpan di browser ini.");
   }
 }
 
-function formatRupiah(amount) {
+// ==========================================
+// FORMAT HARGA RUPIAH
+// ==========================================
+function rupiah(value) {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
     maximumFractionDigits: 0
-  }).format(amount);
+  }).format(value);
 }
 
 function getProduct(id) {
   return products.find(product => product.id === id);
 }
 
-function getCartQuantity() {
-  return cart.reduce((total, item) => total + item.quantity, 0);
+function totalItems() {
+  return cart.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
 }
 
-function getCartTotal() {
-  return cart.reduce((total, item) => {
-    const product = getProduct(item.id);
-    return total + (product ? product.price * item.quantity : 0);
-  }, 0);
+function totalPrice() {
+  return cart.reduce(
+    (sum, item) =>
+      sum + (getProduct(item.id)?.price || 0) * item.quantity,
+    0
+  );
 }
 
-function updateCartBadge() {
-  cartCount.textContent = getCartQuantity();
+// ==========================================
+// NOTIFIKASI WEBSITE
+// ==========================================
+function showToast(message) {
+  if (!toast) return;
+
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2600);
 }
 
+// ==========================================
+// JUMLAH PRODUK DI IKON KERANJANG
+// ==========================================
+function updateBadge() {
+  const badge = $("#cart-count");
+
+  if (badge) {
+    badge.textContent = totalItems();
+  }
+}
+
+// ==========================================
+// TAMBAH PRODUK KE KERANJANG
+// ==========================================
 function addToCart(id) {
-  const item = cart.find(entry => entry.id === id);
+  const product = getProduct(id);
 
-  if (item) {
-    if (item.quantity >= 99) {
-      showToast("Jumlah maksimal per produk adalah 99.");
-      return;
+  if (!product) return;
+
+  const found = cart.find(item => item.id === id);
+
+  if (found) {
+    if (found.quantity >= 99) {
+      return showToast("Maksimal 99 barang per produk.");
     }
-    item.quantity++;
+
+    found.quantity++;
   } else {
-    cart.push({ id, quantity: 1 });
+    cart.push({
+      id,
+      quantity: 1
+    });
   }
 
   saveCart();
-  updateCartBadge();
+  updateBadge();
   renderCart();
-  showToast("Produk berhasil ditambahkan!");
+
+  showToast("Produk ditambahkan ke keranjang.");
 }
 
-function changeQuantity(id, amount) {
+// ==========================================
+// TAMBAH ATAU KURANGI JUMLAH PRODUK
+// ==========================================
+function changeQuantity(id, change) {
   const item = cart.find(entry => entry.id === id);
+
   if (!item) return;
 
-  item.quantity += amount;
+  item.quantity += change;
 
   if (item.quantity <= 0) {
     cart = cart.filter(entry => entry.id !== id);
-  } else if (item.quantity > 99) {
+  }
+
+  if (item.quantity > 99) {
     item.quantity = 99;
-    showToast("Jumlah maksimal per produk adalah 99.");
   }
 
   saveCart();
-  updateCartBadge();
+  updateBadge();
   renderCart();
 }
 
+// ==========================================
+// HAPUS PRODUK DARI KERANJANG
+// ==========================================
 function removeFromCart(id) {
   cart = cart.filter(item => item.id !== id);
+
   saveCart();
-  updateCartBadge();
+  updateBadge();
   renderCart();
+
   showToast("Produk dihapus dari keranjang.");
 }
 
-// ============================================
-// MENAMPILKAN PRODUK
-// ============================================
+// ==========================================
+// GAMBAR PRODUK
+// ==========================================
+function makeImage(src, alt, className) {
+  const img = document.createElement("img");
 
-function createProductCard(product) {
-  const card = document.createElement("article");
-  card.className = "product";
+  img.src = src;
+  img.alt = alt;
+  img.className = className;
+  img.loading = "lazy";
 
-  const image = document.createElement("img");
-  image.className = "product-image";
-  image.src = product.image;
-  image.alt = product.name;
-  image.loading = "lazy";
-  image.onerror = () => {
-    image.onerror = null;
-    image.src =
+  img.onerror = () => {
+    img.onerror = null;
+    img.src =
       "https://placehold.co/700x450/e4f0ff/193451?text=SMEKSA+STORE";
   };
 
-  const info = document.createElement("div");
-  info.className = "product-info";
-
-  const category = document.createElement("p");
-  category.className = "product-category";
-  category.textContent = product.category;
-
-  const name = document.createElement("h3");
-  name.className = "product-name";
-  name.textContent = product.name;
-
-  const description = document.createElement("p");
-  description.className = "product-description";
-  description.textContent = product.description;
-
-  const price = document.createElement("p");
-  price.className = "product-price";
-  price.textContent = formatRupiah(product.price);
-
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "add-button";
-  button.textContent = "Tambah ke Keranjang";
-  button.addEventListener("click", () => addToCart(product.id));
-
-  info.append(category, name, description, price, button);
-  card.append(image, info);
-
-  return card;
+  return img;
 }
 
+// ==========================================
+// MENAMPILKAN PRODUK
+// ==========================================
 function renderProducts() {
-  const keyword = searchInput.value.toLowerCase().trim();
-  const selectedCategory = categorySelect.value;
+  if (!productContainer) return;
+
+  const keyword = searchInput.value.trim().toLowerCase();
+  const category = categorySelect.value;
 
   const filtered = products.filter(product => {
-    const searchableText =
+    const matchKeyword =
       `${product.name} ${product.category} ${product.description}`
-        .toLowerCase();
+        .toLowerCase()
+        .includes(keyword);
 
-    const matchesSearch = searchableText.includes(keyword);
-    const matchesCategory =
-      selectedCategory === "Semua" ||
-      product.category === selectedCategory;
+    const matchCategory =
+      category === "Semua" ||
+      product.category === category;
 
-    return matchesSearch && matchesCategory;
+    return matchKeyword && matchCategory;
   });
 
   productContainer.replaceChildren();
 
   filtered.forEach(product => {
-    productContainer.appendChild(createProductCard(product));
+    const card = document.createElement("article");
+    card.className = "product";
+
+    const info = document.createElement("div");
+    info.className = "product-info";
+
+    const categoryText = document.createElement("p");
+    categoryText.className = "product-category";
+    categoryText.textContent = product.category;
+
+    const name = document.createElement("h3");
+    name.className = "product-name";
+    name.textContent = product.name;
+
+    const desc = document.createElement("p");
+    desc.className = "product-description";
+    desc.textContent = product.description;
+
+    const price = document.createElement("p");
+    price.className = "product-price";
+    price.textContent = rupiah(product.price);
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "add-button";
+    button.textContent = "Tambah ke Keranjang";
+
+    button.addEventListener("click", () => {
+      addToCart(product.id);
+    });
+
+    info.append(
+      categoryText,
+      name,
+      desc,
+      price,
+      button
+    );
+
+    card.append(
+      makeImage(product.image, product.name, "product-image"),
+      info
+    );
+
+    productContainer.append(card);
   });
 
-  productCount.textContent = `${filtered.length} produk`;
-  emptyState.hidden = filtered.length !== 0;
+  if (productCount) {
+    productCount.textContent = `${filtered.length} produk`;
+  }
+
+  if (emptyState) {
+    emptyState.hidden = filtered.length !== 0;
+  }
 }
 
-// ============================================
-// MENAMPILKAN KERANJANG
-// ============================================
-
+// ==========================================
+// MENAMPILKAN ISI KERANJANG
+// ==========================================
 function renderCart() {
+  if (!cartItems) return;
+
   cartItems.replaceChildren();
 
   if (cart.length === 0) {
-    const message = document.createElement("p");
-    message.className = "empty-state";
-    message.textContent = "Keranjang masih kosong. Yuk, pilih produk!";
-    cartItems.appendChild(message);
+    const empty = document.createElement("p");
+
+    empty.className = "empty-state";
+    empty.textContent =
+      "Keranjang masih kosong. Yuk, pilih produk!";
+
+    cartItems.append(empty);
   }
 
   cart.forEach(item => {
     const product = getProduct(item.id);
+
     if (!product) return;
 
     const row = document.createElement("div");
     row.className = "cart-item";
 
-    const image = document.createElement("img");
-    image.src = product.image;
-    image.alt = product.name;
-    image.onerror = () => {
-      image.onerror = null;
-      image.src =
-        "https://placehold.co/100x100/e4f0ff/193451?text=Produk";
-    };
-
     const details = document.createElement("div");
+    details.className = "cart-details";
 
     const name = document.createElement("h3");
     name.textContent = product.name;
 
     const price = document.createElement("p");
     price.className = "item-price";
-    price.textContent = formatRupiah(product.price * item.quantity);
 
-    const quantityRow = document.createElement("div");
-    quantityRow.className = "quantity-row";
+    price.textContent =
+      `${item.quantity} × ${rupiah(product.price)} = ${rupiah(product.price * item.quantity)}`;
+
+    const controls = document.createElement("div");
+    controls.className = "quantity-row";
 
     const minus = document.createElement("button");
     minus.type = "button";
     minus.className = "quantity-button";
     minus.textContent = "−";
-    minus.setAttribute("aria-label", `Kurangi ${product.name}`);
-    minus.addEventListener("click", () => changeQuantity(product.id, -1));
+    minus.setAttribute(
+      "aria-label",
+      `Kurangi ${product.name}`
+    );
 
-    const quantity = document.createElement("span");
-    quantity.textContent = item.quantity;
+    minus.addEventListener("click", () => {
+      changeQuantity(product.id, -1);
+    });
+
+    const qty = document.createElement("span");
+    qty.textContent = item.quantity;
 
     const plus = document.createElement("button");
     plus.type = "button";
     plus.className = "quantity-button";
     plus.textContent = "+";
-    plus.setAttribute("aria-label", `Tambah ${product.name}`);
-    plus.addEventListener("click", () => changeQuantity(product.id, 1));
+    plus.setAttribute(
+      "aria-label",
+      `Tambah ${product.name}`
+    );
+
+    plus.addEventListener("click", () => {
+      changeQuantity(product.id, 1);
+    });
 
     const remove = document.createElement("button");
     remove.type = "button";
     remove.className = "remove-button";
     remove.textContent = "Hapus";
-    remove.addEventListener("click", () => removeFromCart(product.id));
 
-    quantityRow.append(minus, quantity, plus, remove);
-    details.append(name, price, quantityRow);
-    row.append(image, details);
-    cartItems.appendChild(row);
+    remove.addEventListener("click", () => {
+      removeFromCart(product.id);
+    });
+
+    controls.append(
+      minus,
+      qty,
+      plus,
+      remove
+    );
+
+    details.append(name, price, controls);
+
+    row.append(
+      makeImage(product.image, product.name, "cart-image"),
+      details
+    );
+
+    cartItems.append(row);
   });
 
-  cartTotal.textContent = formatRupiah(getCartTotal());
+  if (cartTotal) {
+    cartTotal.textContent = rupiah(totalPrice());
+  }
 
-  document.getElementById("checkout-button").disabled = cart.length === 0;
-  document.getElementById("checkout-button").style.opacity =
-    cart.length === 0 ? "0.5" : "1";
+  const checkoutButton = $("#checkout-button");
+
+  if (checkoutButton) {
+    checkoutButton.disabled = cart.length === 0;
+  }
 }
 
-// ============================================
-// MODAL DAN NOTIFIKASI
-// ============================================
-
+// ==========================================
+// BUKA DAN TUTUP POPUP
+// ==========================================
 function openModal(modal) {
+  if (!modal) return;
+
   modal.hidden = false;
   document.body.classList.add("modal-open");
 }
 
 function closeModal(modal) {
+  if (!modal) return;
+
   modal.hidden = true;
 
-  if (cartModal.hidden && checkoutModal.hidden) {
+  if (
+    (!cartModal || cartModal.hidden) &&
+    (!checkoutModal || checkoutModal.hidden)
+  ) {
     document.body.classList.remove("modal-open");
   }
 }
 
-function showToast(message) {
-  toast.textContent = message;
-  toast.classList.add("show");
-
-  clearTimeout(toastTimeout);
-  toastTimeout = setTimeout(() => {
-    toast.classList.remove("show");
-  }, 2500);
-}
-
-document.getElementById("open-cart").addEventListener("click", () => {
+// ==========================================
+// TOMBOL KERANJANG DAN CHECKOUT
+// ==========================================
+$("#open-cart")?.addEventListener("click", () => {
   renderCart();
   openModal(cartModal);
 });
 
-document.getElementById("close-cart").addEventListener("click", () => {
+$("#close-cart")?.addEventListener("click", () => {
   closeModal(cartModal);
 });
 
-document.getElementById("continue-shopping").addEventListener("click", () => {
+$("#continue-shopping")?.addEventListener("click", () => {
   closeModal(cartModal);
 });
 
-document.getElementById("checkout-button").addEventListener("click", () => {
-  if (cart.length === 0) {
-    showToast("Tambahkan produk terlebih dahulu.");
-    return;
+$("#checkout-button")?.addEventListener("click", () => {
+  if (!cart.length) {
+    return showToast("Keranjang masih kosong.");
   }
 
   closeModal(cartModal);
   openModal(checkoutModal);
 });
 
-document.getElementById("close-checkout").addEventListener("click", () => {
+$("#close-checkout")?.addEventListener("click", () => {
   closeModal(checkoutModal);
 });
 
+// Klik di luar popup untuk menutup
 [cartModal, checkoutModal].forEach(modal => {
-  modal.addEventListener("click", event => {
-    if (event.target === modal) closeModal(modal);
+  modal?.addEventListener("click", event => {
+    if (event.target === modal) {
+      closeModal(modal);
+    }
   });
 });
 
+// Tombol Escape untuk menutup popup
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") {
     closeModal(cartModal);
@@ -466,36 +567,40 @@ document.addEventListener("keydown", event => {
   }
 });
 
-searchInput.addEventListener("input", renderProducts);
-categorySelect.addEventListener("change", renderProducts);
+// ==========================================
+// PENCARIAN DAN FILTER PRODUK
+// ==========================================
+searchInput?.addEventListener("input", renderProducts);
 
-// ============================================
-// CHECKOUT WHATSAPP
-// ============================================
+categorySelect?.addEventListener("change", renderProducts);
 
-document.getElementById("checkout-form").addEventListener("submit", event => {
+// ==========================================
+// CHECKOUT KE WHATSAPP PENJUAL
+// ==========================================
+$("#checkout-form")?.addEventListener("submit", event => {
   event.preventDefault();
 
-  if (cart.length === 0) {
-    showToast("Keranjang kosong. Pilih produk terlebih dahulu.");
-    closeModal(checkoutModal);
-    return;
+  if (!cart.length) {
+    return showToast(
+      "Keranjang kosong. Pilih produk terlebih dahulu."
+    );
   }
 
-  // Pastikan nomor toko sudah diganti dengan nomor penjual yang benar.
   if (!/^\d{10,15}$/.test(STORE_WHATSAPP)) {
-    showToast("Nomor WhatsApp toko belum diatur dengan benar.");
-    return;
+    return showToast(
+      "Nomor WhatsApp toko belum benar."
+    );
   }
 
-  const name = document.getElementById("buyer-name").value.trim();
-  const phone = document.getElementById("buyer-phone").value.trim();
-  const address = document.getElementById("buyer-address").value.trim();
-  const note = document.getElementById("buyer-note").value.trim();
+  const name = $("#buyer-name")?.value.trim();
+  const phone = $("#buyer-phone")?.value.trim();
+  const address = $("#buyer-address")?.value.trim();
+  const note = $("#buyer-note")?.value.trim();
 
   if (!name || !phone || !address) {
-    showToast("Lengkapi nama, nomor HP, dan alamat.");
-    return;
+    return showToast(
+      "Lengkapi nama, nomor HP, dan alamat."
+    );
   }
 
   const lines = [
@@ -510,19 +615,20 @@ document.getElementById("checkout-form").addEventListener("submit", event => {
 
   cart.forEach((item, index) => {
     const product = getProduct(item.id);
-    if (!product) return;
 
-    lines.push(
-      `${index + 1}. ${product.name}`,
-      `   ${item.quantity} x ${formatRupiah(product.price)} = ${formatRupiah(product.price * item.quantity)}`
-    );
+    if (product) {
+      lines.push(
+        `${index + 1}. ${product.name}`,
+        `   ${item.quantity} × ${rupiah(product.price)} = ${rupiah(product.price * item.quantity)}`
+      );
+    }
   });
 
   lines.push(
     "",
-    `*TOTAL BELANJA: ${formatRupiah(getCartTotal())}*`,
-    "Pengiriman/ongkir: mohon dikonfirmasi penjual.",
-    "Pembayaran: transfer bank atau pembayaran manual setelah konfirmasi."
+    `*TOTAL BELANJA: ${rupiah(totalPrice())}*`,
+    "Ongkir: mohon dikonfirmasi penjual.",
+    "Pembayaran: menunggu konfirmasi penjual."
   );
 
   if (note) {
@@ -531,65 +637,19 @@ document.getElementById("checkout-form").addEventListener("submit", event => {
 
   lines.push(
     "",
-    "Mohon konfirmasi ketersediaan produk, ongkir, dan instruksi pembayaran. Terima kasih."
+    "Mohon konfirmasi pesanan ini. Terima kasih."
   );
 
-  const message = lines.join("\n");
-  const whatsappURL =
-    `https://wa.me/${STORE_WHATSAPP}?text=${encodeURIComponent(message)}`;
+  const url =
+    `https://wa.me/${STORE_WHATSAPP}?text=${encodeURIComponent(lines.join("\n"))}`;
 
-  // Membuka WhatsApp. Pembeli tetap harus menekan tombol kirim di WhatsApp.
-  const whatsappWindow = window.open(whatsappURL, "_blank");
-
-  if (!whatsappWindow) {
-    // Jika browser memblokir tab baru, gunakan tab saat ini.
-    window.location.href = whatsappURL;
-  }
+  // Membuka WhatsApp setelah pembeli menekan tombol checkout.
+  window.open(url, "_blank", "noopener,noreferrer");
 });
 
-// ============================================
-// JALANKAN WEBSITE
-// ============================================
-
+// ==========================================
+// MENJALANKAN WEBSITE
+// ==========================================
 renderProducts();
 renderCart();
-updateCartBadge();
-const STORE_WHATSAPP = "6285648262713";
-
-// Fungsi tombol beli sekarang
-function buyProduct(productId) {
-
-    // Cari produk
-    const product = products.find(
-        item => item.id === productId
-    );
-
-    if (!product) {
-        alert("Produk tidak ditemukan!");
-        return;
-    }
-
-    // Buat pesan pesanan
-    const message = `
-HALO SMEKSA STORE!
-
-Saya ingin membeli produk:
-
-Nama Produk: ${product.name}
-Harga: Rp${Number(product.price).toLocaleString("id-ID")}
-
-Mohon konfirmasi pesanan saya.
-Terima kasih!
-`;
-
-    // Buat link WhatsApp
-    const whatsappURL =
-        "https://wa.me/" +
-        STORE_WHATSAPP +
-        "?text=" +
-        encodeURIComponent(message);
-
-    // Buka WhatsApp di Android atau perangkat lain
-    window.location.href = whatsappURL;
-}
-
+updateBadge();
